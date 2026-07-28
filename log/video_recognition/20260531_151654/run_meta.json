@@ -1,0 +1,17 @@
+{
+  "source": "D:/Liang/Pcode/Face Recognition System/V1.mp4",
+  "process_interval": 5,
+  "threshold": 0.4,
+  "aggregate_method": "max",
+  "aggregate_top_k": 3,
+  "device": "cpu",
+  "yolo_weight": "D:\\Liang\\Pcode\\Face Recognition System\\weights\\yolov8s-face.pt",
+  "retinaface_weight": "D:\\Liang\\Pcode\\Face Recognition System\\weights\\Resnet50_Final.pth",
+  "recognition_model": "D:\\Liang\\Pcode\\Face Recognition System\\weights\\w600k_mbf.onnx",
+  "gallery_features": "D:\\Liang\\Pcode\\Face Recognition System\\gallery\\gallery_features.npy",
+  "gallery_labels": "D:\\Liang\\Pcode\\Face Recognition System\\gallery\\gallery_labels.json",
+  "gallery_person_index": "D:\\Liang\\Pcode\\Face Recognition System\\gallery\\gallery_person_index.json",
+  "run_dir": "D:\\Liang\\Pcode\\Face Recognition System\\log\\video_recognition\\20260531_151654",
+  "log_path": "D:\\Liang\\Pcode\\Face Recognition System\\log\\video_recognition\\20260531_151654\\video_result.jsonl",
+  "created_at": "2026-05-31 15:16:54"
+}

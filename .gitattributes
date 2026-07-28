@@ -1,0 +1,15 @@
+# Git LFS：大体积模型权重（GitHub 单文件限制 100MB）
+# 首次使用前请安装 Git LFS：https://git-lfs.com/
+#
+#   git lfs install
+#   git add .gitattributes
+#   git add weights/
+#   git commit -m "Track model weights with Git LFS"
+
+weights/**/*.pt filter=lfs diff=lfs merge=lfs -text
+weights/**/*.pth filter=lfs diff=lfs merge=lfs -text
+weights/**/*.onnx filter=lfs diff=lfs merge=lfs -text
+weights/piper/piper.exe filter=lfs diff=lfs merge=lfs -text
+
+# 可选：特征库矩阵（若决定提交 gallery）
+gallery/gallery_features.npy filter=lfs diff=lfs merge=lfs -text

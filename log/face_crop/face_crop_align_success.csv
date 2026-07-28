@@ -1,0 +1,2 @@
+﻿file,source_image,output_image,status,yolo_score,bbox_x1,bbox_y1,bbox_x2,bbox_y2,expanded_x1,expanded_y1,expanded_x2,expanded_y2,landmarks,output_size
+101003,D:\Liang\Pcode\Face Recognition System\raw\101003\101003_陈美嘉_000.png,D:\Liang\Pcode\Face Recognition System\identities\101003\101003_陈美嘉_000.png,success_aligned,0.8844334483146667,233,138,515,569,190,73,557,633,"[[120.06227111816406, 257.0277099609375], [249.72535705566406, 232.8726348876953], [209.811767578125, 320.452880859375], [157.34417724609375, 403.75897216796875], [262.4198303222656, 382.9185485839844]]",112

@@ -1,0 +1,111 @@
+# # =========================
+# # Python
+# # =========================
+# __pycache__/
+# *.py[cod]
+# *$py.class
+# *.so
+# .Python
+# build/
+# develop-eggs/
+# dist/
+# downloads/
+# eggs/
+# .eggs/
+# lib/
+# lib64/
+# parts/
+# sdist/
+# var/
+# wheels/
+# pip-wheel-metadata/
+# share/python-wheels/
+# *.egg-info/
+# .installed.cfg
+# *.egg
+# MANIFEST
+
+# # Virtual environments
+# .env
+# .venv/
+# env/
+# venv/
+# ENV/
+# env.bak/
+# venv.bak/
+
+# # =========================
+# # IDE / Editor
+# # =========================
+# .vscode/
+# .idea/
+# *.suo
+# *.ntvs*
+# *.njsproj
+# *.sln
+# *.sw?
+# *.swp
+# *.swo
+# *~
+
+# # =========================
+# # OS
+# # =========================
+# .DS_Store
+# .DS_Store?
+# ._*
+# .Spotlight-V100
+# .Trashes
+# ehthumbs.db
+# Thumbs.db
+# desktop.ini
+
+# # =========================
+# # Jupyter
+# # =========================
+# .ipynb_checkpoints/
+
+# # =========================
+# # Project runtime / temporary
+# # =========================
+# temp/
+# *.log
+
+# # 运行时生成的日志（可重新产生）
+# log/
+
+# # 视频识别输出
+# outputs/
+
+# # 图片识别结果（可重新产生）
+# recognition/*.csv
+
+# # 临时语音文件
+# temp/*.wav
+
+# # =========================
+# # Generated gallery data
+# # 特征库可由 pipeline 重新构建，默认不提交
+# # 若需一并上传特征库，请删除下面两行
+# # =========================
+# gallery/gallery_features.npy
+
+# # =========================
+# # Privacy-sensitive data
+# # 含真实人脸的原始数据与处理结果，默认不提交
+# # 若仅上传脱敏示例数据，可删除下面两行
+# # =========================
+# raw/
+# identities/
+
+# # =========================
+# # Local config overrides（可选）
+# # 若使用 config.local.yaml 存放本机路径，可取消注释
+# # =========================
+# # config.local.yaml
+
+# # =========================
+# # Weights — 需要上传，勿忽略
+# # weights/ 目录下的 .pt / .pth / .onnx 等模型文件请保留并提交
+# # 单文件超过 100MB 时请配合 .gitattributes 使用 Git LFS
+# # =========================

@@ -1,0 +1,8 @@
+numpy
+opencv-python
+pillow
+pyyaml
+pandas
+tqdm
+ultralytics
+onnxruntime-gpu

@@ -1,0 +1,386 @@
+project:
+  root: "D:/Pcode/Face Recognition System"
+
+paths:
+  raw_dir: "raw"
+  output_dir: "identities"
+  log_dir: "log"
+
+weights:
+  yolo_face: "weights/yolov8s-face.pt"
+  retinaface: "weights/Resnet50_Final.pth"
+
+  # 人脸识别 ONNX 模型
+  # 可选：
+  #   "weights/w600k_mbf.onnx"
+  #   "weights/w600k_r50.onnx"
+  arcface_onnx: "weights/w600k_mbf.onnx"
+
+preprocess: #人脸裁剪+关键点对齐
+  input_size: 112
+  yolo_conf: 0.5
+  face_expand_ratio: 0.3
+
+  retinaface_backbone: "resnet50"
+  retinaface_confidence: 0.5
+  retinaface_nms: 0.4
+  retinaface_device: "cuda"
+
+  fallback_to_yolo_crop: true
+  skip_if_exists: true
+  overwrite: false
+
+  image_exts:
+    - ".jpg"
+    - ".jpeg"
+    - ".png"
+    - ".bmp"
+
+augment: #数据增强
+  enable: true
+  input_dir: "identities"
+  save_to_original_dir: true
+  source_index: "000"
+
+  output_indices:
+    - "001"
+    - "002"
+    - "003"
+    - "004"
+    - "005"
+    - "006"
+    - "007"
+    - "008"
+    - "009"
+    - "010"
+    - "011"
+    - "012"
+    - "013"
+    - "014"
+
+  skip_if_exists: true
+  overwrite: false
+  save_ext: ".jpg"
+  save_quality: 95
+
+  rotate_left_angle: -20
+  rotate_right_angle: 20
+
+  brightness_dark_factor: 0.6
+  brightness_bright_factor: 1.6
+
+  contrast_low_factor: 0.6
+  contrast_high_factor: 1.6
+
+  gaussian_blur_kernel: 7
+  gaussian_noise_mean: 0
+  gaussian_noise_sigma: 20
+
+  jpeg_quality_min: 45
+  jpeg_quality_max: 65
+
+  occlusion_colors:
+    - [0, 0, 0]
+    - [50, 50, 50]
+    - [180, 180, 180]
+
+  upper_occlusion:
+    x1: 0.00
+    x2: 1.00
+    y1: 0.04
+    y2: 0.46
+
+  lower_occlusion:
+    x1: 0.00
+    x2: 1.00
+    y1: 0.62
+    y2: 0.88
+
+  random_erasing:
+    min_width_ratio: 0.36
+    max_width_ratio: 0.75
+    min_height_ratio: 0.24
+    max_height_ratio: 0.54
+
+  shift_scale:
+    scale: 1.05
+
+gallery:   # 人物特征库构建
+  input_dir: "identities"
+
+  # gallery 输出目录
+  output_dir: "gallery"
+
+  # 多模板特征库模式
+  mode: "multi_template"
+  save_every_n: 20
+  # 多模板 gallery 输出文件
+  features_file: "gallery_features.npy"
+  labels_file: "gallery_labels.json"
+  person_index_file: "gallery_person_index.json"
+
+  # 日志文件
+  log_file: "build_gallery_log.csv"
+
+  # 模型输入尺寸
+  input_size: 112
+
+  # ArcFace / MobileFaceNet / InsightFace 输出维度
+  embedding_dim: 512
+
+  # 每个人理论图片数量
+  expected_images_per_identity: 15
+
+  # 图片不足 expected_images_per_identity 时是否仍然使用已有图片
+  use_available_images_if_incomplete: true
+
+  # 如果某个人没有任何可用图片，则跳过
+  skip_empty_identity: true
+
+  # 断点续跑
+  resume: true
+
+  # 如果某个工号已经存在于 gallery_person_index.json 中，是否跳过
+  skip_existing_identity: true
+
+  # false 表示断点续跑；true 表示重新构建整个 gallery
+  overwrite: false
+
+  # ONNX Runtime 设备选择："auto", "cuda", "cpu"
+  device: "cuda"
+
+  image_exts:
+    - ".jpg"
+    - ".jpeg"
+    - ".png"
+    - ".bmp"
+
+
+recognition: #infer 多张单图片推理，输出结果
+  infer_dir: "infer"
+  output_dir: "recognition"
+  result_csv: "recognition_results.csv"
+
+  label_csv: "identities/label.csv"
+
+  gallery_features: "gallery/gallery_features.npy"
+  gallery_labels: "gallery/gallery_labels.json"
+  gallery_person_index: "gallery/gallery_person_index.json"
+
+  top_k: 5
+  aggregate_method: "max"
+  aggregate_top_k: 3
+  threshold: 0.40
+
+  input_size: 112
+  embedding_dim: 512
+  device: "cuda"
+
+  fallback_to_yolo_crop: true
+  recursive: true
+
+  image_exts:
+    - ".jpg"
+    - ".jpeg"
+    - ".png"
+    - ".bmp"
+
+test_evaluation:  #全流程测试未见图片 test，输出指标
+  # 原始测试集目录
+  # 里面直接放 101024.jpg、101038.jpg 这种图片
+  raw_test_dir: "infer"
+
+  # 标签表，用于工号转姓名；如果不需要姓名，也可以保留
+  label_csv: "identities/label.csv"
+
+  # 多模板 gallery 文件
+  gallery_features: "gallery/gallery_features.npy"
+  gallery_labels: "gallery/gallery_labels.json"
+  gallery_person_index: "gallery/gallery_person_index.json"
+
+  # 多模板聚合方式：
+  # max = 每个人所有模板中取最高相似度
+  # topk_mean = 每个人取最高 k 个模板分数求平均
+  aggregate_method: "max"
+  aggregate_top_k: 3
+
+  # Top-K 输出数量
+  top_k: 5
+
+  # Unknown 阈值
+  threshold: 0.40
+
+  # 识别模型输入
+  input_size: 112
+  embedding_dim: 512
+  device: "cuda"
+
+  # 如果 RetinaFace 关键点失败，是否退化为 YOLO 裁剪 + resize
+  fallback_to_yolo_crop: true
+
+  # 测试集图片格式
+  image_exts:
+    - ".jpg"
+    - ".jpeg"
+    - ".png"
+    - ".bmp"
+
+  # 终端打印错误样本数量
+  print_top_n: 10
+
+
+video: #视频流进行识别
+  # 摄像头编号或视频文件路径
+  # 0 = 默认摄像头
+  # 也可以写成 "D:/xxx/test_video.mp4"
+  source:  "D:/Pcode/Face Recognition System/V1.mp4" # 0  # 
+
+  # 每隔多少帧执行一次完整检测 + 识别
+  process_interval: 8
+
+  # 非处理帧是否沿用上一帧识别结果画框
+  draw_last_results: true
+
+  # 显示窗口
+  show_window: true
+  window_name: "Video Face Recognition"
+  display_scale: 1.0
+
+  # 是否保存输出视频
+  save_output_video: false
+  output_video_path: "outputs/video_result.mp4"
+
+  # =========================
+  # 日志配置：每次运行独立保存
+  # =========================
+  save_log: true
+
+  # 日志根目录，每次运行会在这个目录下自动创建时间戳文件夹
+  log_root: "log/video_recognition"
+
+  # auto 表示自动使用当前运行时间作为文件夹名，例如 20260531_143011
+  log_run_name: "auto"
+
+  # 推荐 jsonl
+  log_format: "jsonl"
+
+  # 日志文件名，不用写后缀，程序会自动生成 video_result.jsonl
+  log_file_name: "video_result"
+
+  # 缓冲多少条记录后写入磁盘，减少频繁 IO
+  log_buffer_size: 50
+
+  # 最多多少秒强制 flush 一次
+  log_flush_interval_seconds: 1.0
+
+  # 是否保存本次运行的元信息
+  save_run_meta: true
+
+  # 同一个 employee_id 在多少秒内不重复写日志
+  log_cooldown_seconds: 2.0
+
+  # 是否记录 Unknown
+  log_unknown: true
+
+  # Unknown 日志冷却时间
+  unknown_log_cooldown_seconds: 2.0
+
+  # 人脸检测参数
+  yolo_conf: 0.5
+  face_expand_ratio: 0.3
+
+  # 识别参数
+  threshold: 0.40
+  top_k: 5
+  aggregate_method: "max"
+  aggregate_top_k: 3
+
+  # 输入输出参数
+  input_size: 112
+  embedding_dim: 512
+
+  # ONNX Runtime 设备："cpu" / "cuda" / "auto"
+  device: "cpu"
+
+  # RetinaFace 关键点失败时，是否退化为 YOLO 裁剪 resize
+  fallback_to_yolo_crop: true
+
+  # 画面显示内容
+  draw_score: true
+  draw_status: true
+  draw_det_conf: false
+  draw_fps: true
+
+  # 中文字体路径，可选
+  font_path: null
+  font_size: 22
+
+  # 按键退出
+  quit_key: "q"
+
+  # 复用标签和 gallery
+  label_csv: "identities/label.csv"
+  gallery_features: "gallery/gallery_features.npy"
+  gallery_labels: "gallery/gallery_labels.json"
+  gallery_person_index: "gallery/gallery_person_index.json"
+
+
+voice: #视频语音播报
+  # 是否启用语音播报
+  enable: true
+
+  # 播报模式：当前只做主人脸播报
+  mode: "main_face"
+
+  # 只在检测帧进行播报判断，不在非处理帧重复判断
+  only_process_frame: true
+
+  # 主人脸选择策略：
+  # score = 从 Known 人脸中选择识别分数最高者
+  main_face_strategy: "score"
+
+  # 低于该分数不播报
+  min_score: 0.40
+
+  # 同一个 employee_id 多少秒内不重复播报
+  # 180 秒 = 3 分钟
+  cooldown_seconds: 180
+
+  # 动态播报文本
+  # 例如识别到 王金霞，则播报：王金霞老师您好
+  text_template: "{name}老师您好"
+
+  # 离线 TTS 引擎
+  tts_engine: "piper"
+
+  # Piper 可执行文件
+  piper_exe: "weights/piper/piper.exe"
+
+  # Piper 中文模型
+  model_path: "weights/piper/zh_CN-huayan-medium.onnx"
+  config_path: "weights/piper/zh_CN-huayan-medium.onnx.json"
+
+  # 临时音频文件
+  # 只用于播放，播完会删除，不会长期保存
+  temp_audio_path: "temp/tts_temp.wav"
+  delete_temp_audio_after_play: true
+
+  # 语音队列最大长度，防止短时间内堆积太多播报
+  queue_max_size: 5
+
+  # 队列满时是否丢弃新的播报请求
+  drop_if_queue_full: true
+
+  # 是否在终端打印播报内容
+  print_announce: true
+
+
+
+output:
+  success_csv: "face_crop/face_crop_align_success.csv"
+  failed_csv: "face_crop/face_crop_align_failed.csv"
+  skipped_csv: "face_crop/face_crop_align_skipped.csv"
+
+  augment_success_csv: "face_augment/face_augment_success.csv"
+  augment_skipped_csv: "face_augment/face_augment_skipped.csv"
+  augment_failed_csv: "face_augment/face_augment_failed.csv"
