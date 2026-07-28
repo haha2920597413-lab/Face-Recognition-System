@@ -90,7 +90,9 @@ python run.py
 
 # 本地视频文件人脸识别（无语音）
 python video_face_recognition.py
+
 4. 新增人员增量更新
+   
 新增人员照片与信息后，一键流水线更新，无需重构全部特征库：
 python pipeline_update_gallery.py
 
