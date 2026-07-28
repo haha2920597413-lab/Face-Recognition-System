@@ -33,14 +33,14 @@ Python3.10 / PyTorch / ONNX Runtime GPU / YOLOv8-face / RetinaFace / ArcFace / O
 ---
 📁 项目结构
 Face-Recognition-System/
-├── config.yaml                 # 全局统一配置文件
-├── requirements-gpu.txt        # GPU版本依赖清单
-├── face_crop_align.py          # 人脸检测+关键点对齐裁剪
-├── augment_identities.py       # 多场景数据增强生成
-├── build_gallery.py            # 全量构建人脸特征库
-├── pipeline_update_gallery.py  # 增量人员更新流水线
-├── recognize_raw_in_memory.py  # 批量图片离线识别
-├── video_face_recognition.py   # 视频/摄像头识别（无语音）
+ ├── config.yaml                 # 全局统一配置文件
+ ├── requirements-gpu.txt        # GPU版本依赖清单
+ ├── face_crop_align.py          # 人脸检测+关键点对齐裁剪
+ ├── augment_identities.py       # 多场景数据增强生成
+ ├── build_gallery.py            # 全量构建人脸特征库
+ ├── pipeline_update_gallery.py  # 增量人员更新流水线
+ ├── recognize_raw_in_memory.py  # 批量图片离线识别
+   ├── video_face_recognition.py   # 视频/摄像头识别（无语音）
 ├── run.py                      # 完整版识别（含离线语音播报）
 ├── raw/                        # 原始人员证件照
 ├── identities/                 # 对齐+增强后的标准人脸库
